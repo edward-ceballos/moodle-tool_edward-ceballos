@@ -11,5 +11,13 @@ $PAGE->set_pagelayout('report');
 $PAGE->set_title('Hello to the Edward Ceballos');
 $PAGE->set_heading(get_string('hello_world', 'tool_edward'));
 
+
 echo $OUTPUT->header();
+
+echo html_writer::div(
+	get_string('hello_world', 'tool_edward'), 
+	'multilang', 
+	array('id' => '1', 'lang' => 'en')
+); 
+
 echo $OUTPUT->footer();
