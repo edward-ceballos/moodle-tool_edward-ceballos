@@ -22,13 +22,13 @@
  
 defined('MOODLE_INTERNAL') || die();
  
-$plugin->version = 2020121013;
+$plugin->version = 2020121314;
 $plugin->requires = 2014051200;
 $plugin->supported = [37, 39];   // Available as of Moodle 3.9.0 or later.
 //$plugin->incompatible = 36;   // Available as of Moodle 3.9.0 or later.
 $plugin->component = 'tool_edward';
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release = 'v1.2';
+$plugin->release = 'v1.4';
  
 $plugin->dependencies = [
     // 'mod_forum' => ANY_VERSION,

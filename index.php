@@ -15,12 +15,19 @@ $PAGE->set_heading(get_string('hello_world', 'tool_edward'));
 $settingnode = $PAGE->settingsnav->add(get_string('hello_world', 'tool_edward'), new moodle_url('/admin/tool/edward/index.php', array('id'=>'3')), navigation_node::TYPE_CONTAINER);
 $settingnode->make_active();
 
+$count_user = $DB->count_records('user');
 echo $OUTPUT->header();
 
 echo html_writer::div(
 	get_string('hello_world', 'tool_edward'), 
 	'multilang', 
 	array('id' => '1', 'lang' => 'en')
+); 
+
+echo html_writer::div(
+	"Cantidad de usuarios registrados: {$count_user}", 
+	'multilang', 
+	array('id' => '2', 'lang' => 'en')
 ); 
 
 echo $OUTPUT->footer();
