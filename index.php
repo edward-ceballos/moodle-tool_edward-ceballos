@@ -25,7 +25,7 @@ echo html_writer::div(
 ); 
 
 echo html_writer::div(
-	"Cantidad de usuarios registrados: {$count_user}", 
+	get_string('text_count_users', 'tool_edward', $count_user), 
 	'multilang', 
 	array('id' => '2', 'lang' => 'en')
 ); 
