@@ -15,22 +15,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
  
 /**
- * @package   plugintype_pluginname
- * @copyright 2020, You Name <your@email.address>
+ * @package   tool_edward
+ * @copyright 2020, Edward Ceballos <info@edwardceballos.com>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
  
 defined('MOODLE_INTERNAL') || die();
  
-$plugin->version = 2020121314;
+$plugin->version = 2020112015;
 $plugin->requires = 2014051200;
-$plugin->supported = [37, 39];   // Available as of Moodle 3.9.0 or later.
-//$plugin->incompatible = 36;   // Available as of Moodle 3.9.0 or later.
+$plugin->supported = [37, 39];
 $plugin->component = 'tool_edward';
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release = 'v1.4';
- 
-$plugin->dependencies = [
-    // 'mod_forum' => ANY_VERSION,
-    // 'mod_data' => TODO
-];
+$plugin->release = 'v1.5';
