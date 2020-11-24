@@ -1,5 +1,6 @@
 <?php
 
+use core_user\output\myprofile\tree;
 defined('MOODLE_INTERNAL') || die();
 
 class data {
@@ -10,9 +11,9 @@ class data {
 		return format_string($text, $format, $options);
 	}
 
-	public function get_data() {
+	public function get_data($id) {
 		global $DB;
-		$rows = $DB->get_records('tool_edward');
+		$rows = $DB->get_records('tool_edward', array('courseid' => $id));
 
 		$table = new html_table();
 

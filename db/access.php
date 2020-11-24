@@ -21,12 +21,28 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
- 
 defined('MOODLE_INTERNAL') || die();
- 
-$plugin->version = 2020112416;
-$plugin->requires = 2014051200;
-$plugin->supported = [37, 39];
-$plugin->component = 'tool_edward';
-$plugin->maturity = MATURITY_STABLE;
-$plugin->release = 'v1.6';
+
+$capabilities = array(
+    'tool/edward:view' => array(
+        'riskbitmask' => RISK_CONFIG,
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_MODULE,
+        'archetypes' => array(
+            'student'        => CAP_ALLOW,
+            'teacher'        => CAP_ALLOW,
+            'editingteacher' => CAP_ALLOW,
+            'manager'        => CAP_ALLOW
+        ),
+    ),
+    'tool/edward:edit' => array(
+        'riskbitmask' => RISK_CONFIG,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_MODULE,
+        'archetypes' => array(
+            'teacher'        => CAP_ALLOW,
+            'editingteacher' => CAP_ALLOW,
+            'manager'        => CAP_ALLOW
+        ),
+    ),
+ );
