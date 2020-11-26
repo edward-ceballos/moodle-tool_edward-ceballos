@@ -27,17 +27,16 @@ require_login(null, false);
 require_capability('tool/edward:view', context_module::instance($PAGE->course->id));
 
 $url = new moodle_url('/admin/tool/edward/index.php');
-$PAGE->set_context(context_system::instance());
 $PAGE->set_url($url, array('id' => $PAGE->course->id));
+$PAGE->set_context(context_system::instance());
 $PAGE->set_pagelayout('report');
 $PAGE->set_title(get_string('pluginname', 'tool_edward'));
 $PAGE->set_heading(get_string('hello_world', 'tool_edward'));
-require_once(__DIR__ . '/lib.php');
 
-$settingnode = $PAGE->settingsnav->add(get_string('hello_world', 'tool_edward'), new moodle_url('/admin/tool/edward/index.php', array('id'=> $PAGE->course->id)), navigation_node::TYPE_CONTAINER);
-tool_edward_extend_settings_navigation($settingnode, context_system::instance());
+$settingnode = $PAGE->settingsnav->add(get_string('pluginname', 'tool_edward'), new moodle_url('/admin/tool/edward/index.php', array('id'=> $PAGE->course->id)), navigation_node::TYPE_CONTAINER);
 
 $count_user = $DB->count_records('user');
+
 echo $OUTPUT->header();
 
 echo html_writer::div(
@@ -51,6 +50,13 @@ echo html_writer::div(
 	'multilang', 
 	array('id' => $PAGE->course->id, 'lang' => current_language())
 ); 
+
+if (has_capability('tool/edward:edit', context_system::instance())){
+	echo html_writer::link(
+		new moodle_url('/admin/tool/edward/edit.php'),
+		get_string('add', 'tool_edward')
+	); 
+}
 
 if (!class_exists('mod_forum_some_class')) {
   require_once(__DIR__ . '/classes/data.php');
