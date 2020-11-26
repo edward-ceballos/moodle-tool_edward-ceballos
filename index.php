@@ -51,7 +51,7 @@ echo html_writer::div(
 	array('id' => $PAGE->course->id, 'lang' => current_language())
 ); 
 
-if (has_capability('tool/edward:edit', context_system::instance())){
+if (has_capability('tool/edward:edit', context_module::instance($PAGE->course->id))){
 	echo html_writer::link(
 		new moodle_url('/admin/tool/edward/edit.php'),
 		get_string('add', 'tool_edward')

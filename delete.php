@@ -21,12 +21,18 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
- 
-defined('MOODLE_INTERNAL') || die();
- 
-$plugin->version = 2020112618;
-$plugin->requires = 2014051200;
-$plugin->supported = [37, 39];
-$plugin->component = 'tool_edward';
-$plugin->maturity = MATURITY_STABLE;
-$plugin->release = 'v1.8';
+require_once(__DIR__ . '/../../../config.php');
+
+defined('MOODLE_INTERNAL') || die;
+
+if ($deleteid = optional_param('delete', null, PARAM_INT)) {
+    $record = $DB->get_record('tool_edward', ['id' => $deleteid], '*', MUST_EXIST);
+    require_login(get_course($record->courseid));
+    require_capability('tool/edward:edit', context_course::instance($record->courseid));
+    $DB->delete_records('tool_edward', ['id' => $deleteid]);
+    redirect(new moodle_url('/admin/tool/edward/index.php', ['id' => $record->courseid]));
+    var_dump(optional_param('delete', null, PARAM_INT));	
+}
+else{
+var_dump(optional_param('delete', null, PARAM_INT));	
+}

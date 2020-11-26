@@ -24,6 +24,9 @@
 require_once(__DIR__ . '/../../../config.php');
 require_once(__DIR__ .'/classes/form.php');
 
+defined('MOODLE_INTERNAL') || die;
+
+
 if (isset($_GET['edit'])) {
 	$row = $DB->get_record('tool_edward', array('id' => trim($_GET['edit'])));
 	if ($row && $row->courseid == trim($_GET['id'])) {
@@ -40,11 +43,7 @@ if (isset($_GET['edit'])) {
 	$settingnode = $PAGE->settingsnav->add(get_string('pluginname', 'tool_edward'), new moodle_url('/admin/tool/edward/index.php', array('id' => $row->id)), navigation_node::TYPE_CONTAINER);
 
 	$settingnode2 = $settingnode->add(get_string('edit', 'tool_edward'), new moodle_url('/admin/tool/edward/edit.php', array('id' => $row->id)), navigation_node::TYPE_CONTAINER);
-
 	
-	
-
-
 		$form = new form();
 
 		$form->set_data($row);
