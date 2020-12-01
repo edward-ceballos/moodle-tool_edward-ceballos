@@ -22,34 +22,34 @@
  */
 
 require_once("$CFG->libdir/formslib.php");
- 
+
 class form extends moodleform {
     //Add elements to form
     public function definition() {
 
         // $repeatarray = array();
         // $repeatarray[] = $form->createElement('text', 'limit', get_string('limitno', 'choice'));
- 
+       
         // if (@$this->_instance){
         //     $repeatno = $DB->count_records('choice_options', array('choiceid'=>$this->_instance));
         //     $repeatno += 2;
         // } else {
         //     $repeatno = 2;
         // }
- 
+       
         // $repeateloptions = array();
         // $repeateloptions['limit']['default'] = 0;
         // $repeateloptions['limit']['disabledif'] = array('limitanswers', 'eq', 0);
         // $repeateloptions['limit']['rule'] = 'numeric';
         // $repeateloptions['limit']['type'] = PARAM_INT;
- 
+       
         // $repeateloptions['limit']['helpbutton'] = array('choiceoptions', 'choice');
- 
+       
         // $this->repeat_elements($repeatarray, $repeatno,
         //             $repeateloptions, 'option_repeats', 'option_add_fields', 1, null, true);
 
         global $CFG, $PAGE;
- 
+        
         $form = $this->_form;
 
         $form->addElement('header', null, get_string('pluginname', 'tool_edward'));
@@ -77,16 +77,16 @@ class form extends moodleform {
         global $DB;
         $errors = array();
 
-if (isset($data['id']) && empty($data['id']) || !isset($data['id'])) {
+        if (isset($data['id']) && empty($data['id']) || !isset($data['id'])) {
 
-    $name = $DB->get_record('tool_edward', array('name' => $data['name']));
+            $name = $DB->get_record('tool_edward', array('name' => $data['name']));
 
-        if (!empty($name)) {
-            $errors['name'] = get_string('error_name',  'tool_edward', $name->name);
+            if (!empty($name)) {
+                $errors['name'] = get_string('error_name',  'tool_edward', $name->name);
+            }
         }
-}
         
- 
+        
         return $errors;
     }
 }

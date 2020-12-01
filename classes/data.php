@@ -38,7 +38,7 @@ class data {
 
 		$table = new html_table();
 
-		if (has_capability('tool/edward:edit', context_module::instance($PAGE->course->id))){
+		if (has_capability('tool/edward:edit', context_course::instance($PAGE->course->id))){
 			$table->head = array('ID', get_string('name'), get_string('resolved', 'tool_edward'), get_string('priority', 'tool_edward'), get_string('timecreated', 'tool_edward'), get_string('timemodified', 'tool_edward'), get_string('actions', 'tool_edward'));
 
 			foreach ($rows as $records) {
@@ -51,12 +51,12 @@ class data {
 					$records->timecreated ? userdate($records->timecreated) : '',
 					$records->timemodified ? userdate($records->timemodified) : '',
 					html_writer::link(
-						new moodle_url('/admin/tool/edward/edit.php', array('id' =>$PAGE->course->id, 'edit' =>$records->id)),
-						get_string('edit', 'tool_edward'), array('title' => get_string('editentrytitle', 'tool_edward', format_string($records->name)))
+						new moodle_url('/admin/tool/edward/edit.php', array('id' => $PAGE->course->id, 'edit' =>$records->id)),
+						get_string('edit', 'tool_edward'), array('title' => get_string('editentrytitle', 'tool_edward', format_string($records->name)), 'class' => 'edit')
 					)
 					.' '.html_writer::link(
-						new moodle_url('/admin/tool/edward/delete.php', array('id' =>$PAGE->course->id, 'delete' =>$records->id)),
-						get_string('delete', 'tool_edward')
+						new moodle_url('/admin/tool/edward/delete.php', array('id' => $PAGE->course->id, 'delete' =>$records->id)),
+						get_string('delete', 'tool_edward'), array('class' => 'del')
 					),
 				);
 			}

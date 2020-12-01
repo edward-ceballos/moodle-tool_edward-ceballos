@@ -24,7 +24,8 @@
 require_once(__DIR__ . '/../../../config.php');
 
 require_login(null, false);
-require_capability('tool/edward:view', context_module::instance($PAGE->course->id));
+// var_dump($PAGE->course->id);
+require_capability('tool/edward:view', context_course::instance($PAGE->course->id));
 
 $url = new moodle_url('/admin/tool/edward/index.php');
 $PAGE->set_url($url, array('id' => $PAGE->course->id));
@@ -33,9 +34,15 @@ $PAGE->set_pagelayout('report');
 $PAGE->set_title(get_string('pluginname', 'tool_edward'));
 $PAGE->set_heading(get_string('hello_world', 'tool_edward'));
 
-$settingnode = $PAGE->settingsnav->add(get_string('pluginname', 'tool_edward'), new moodle_url('/admin/tool/edward/index.php', array('id'=> $PAGE->course->id)), navigation_node::TYPE_CONTAINER);
+// $settingnode = $PAGE->settingsnav->add(get_string('pluginname', 'tool_edward'), new moodle_url('/admin/tool/edward/index.php', array('id'=> $PAGE->course->id)), navigation_node::TYPE_CONTAINER);
 
 $count_user = $DB->count_records('user');
+
+
+require_once($CFG->libdir.'/adminlib.php');
+require_once($CFG->dirroot.'/'.$CFG->admin.'/tool/edward/lib.php');
+
+tool_edward_extend_navigation_course($PAGE->navigation, $PAGE->course, context_course::instance($PAGE->course->id));
 
 echo $OUTPUT->header();
 
@@ -51,16 +58,17 @@ echo html_writer::div(
 	array('id' => $PAGE->course->id, 'lang' => current_language())
 ); 
 
-if (has_capability('tool/edward:edit', context_module::instance($PAGE->course->id))){
+if (has_capability('tool/edward:edit', context_course::instance($PAGE->course->id))){
 	echo html_writer::link(
 		new moodle_url('/admin/tool/edward/edit.php'),
-		get_string('add', 'tool_edward')
+		get_string('add', 'tool_edward'),
+		array('class' => "add")
 	); 
 }
 
-if (!class_exists('mod_forum_some_class')) {
+// if (!class_exists('data')) {
   require_once(__DIR__ . '/classes/data.php');
-}
+// }
 
 $data = new data();
 $table = $data->get_data($PAGE->course->id);

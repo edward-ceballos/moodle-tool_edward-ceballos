@@ -30,20 +30,20 @@ defined('MOODLE_INTERNAL') || die;
 if (isset($_GET['edit'])) {
 	$row = $DB->get_record('tool_edward', array('id' => trim($_GET['edit'])));
 	if ($row && $row->courseid == trim($_GET['id'])) {
-	require_login(null, false);
-	require_capability('tool/edward:edit', context_module::instance($PAGE->course->id));
-	$url = new moodle_url('/admin/tool/edward/edit.php');
-	$nexturl = new moodle_url('/admin/tool/edward/index.php');
-	$PAGE->set_url($url, array('id' => $row->id));
-	$PAGE->set_context(context_system::instance());
-	$PAGE->set_pagelayout('report');
-	$PAGE->set_title(get_string('pluginname', 'tool_edward'));
-	$PAGE->set_heading(get_string('hello_world', 'tool_edward'));
+		require_login(null, false);
+		require_capability('tool/edward:edit', context_course::instance($PAGE->course->id));
+		$url = new moodle_url('/admin/tool/edward/edit.php');
+		$nexturl = new moodle_url('/admin/tool/edward/index.php');
+		$PAGE->set_url($url, array('id' => $row->id));
+		$PAGE->set_context(context_system::instance());
+		$PAGE->set_pagelayout('report');
+		$PAGE->set_title(get_string('pluginname', 'tool_edward'));
+		$PAGE->set_heading(get_string('hello_world', 'tool_edward'));
 
-	$settingnode = $PAGE->settingsnav->add(get_string('pluginname', 'tool_edward'), new moodle_url('/admin/tool/edward/index.php', array('id' => $row->id)), navigation_node::TYPE_CONTAINER);
+		$settingnode = $PAGE->settingsnav->add(get_string('pluginname', 'tool_edward'), new moodle_url('/admin/tool/edward/index.php', array('id' => $row->id)), navigation_node::TYPE_CONTAINER);
 
-	$settingnode2 = $settingnode->add(get_string('edit', 'tool_edward'), new moodle_url('/admin/tool/edward/edit.php', array('id' => $row->id)), navigation_node::TYPE_CONTAINER);
-	
+		$settingnode2 = $settingnode->add(get_string('edit', 'tool_edward'), new moodle_url('/admin/tool/edward/edit.php', array('id' => $row->id)), navigation_node::TYPE_CONTAINER);
+
 		$form = new form();
 
 		$form->set_data($row);
@@ -70,7 +70,7 @@ if (isset($_GET['edit'])) {
 }
 else{
 	require_login(null, false);
-	require_capability('tool/edward:edit', context_module::instance($PAGE->course->id));
+	require_capability('tool/edward:edit', context_course::instance($PAGE->course->id));
 	$url = new moodle_url('/admin/tool/edward/edit.php');
 	$nexturl = new moodle_url('/admin/tool/edward/index.php');
 	$PAGE->set_url($url, array('id' => $PAGE->course->id));
@@ -90,18 +90,18 @@ else{
 	} 
 	else if ($froform = $form->get_data()) {
 
-if (isset($froform->id) && !empty($froform->id)) {
-	// $froform->timecreated = time();
-	$froform->timemodified = time();
+		if (isset($froform->id) && !empty($froform->id)) {
+			$froform->timemodified = time();
+			if (!isset($froform->completed)) {
+				$froform->completed = 0;
+			}
+			$DB->update_record('tool_edward', $froform, $returnid=true, $bulk=false);
+		}
+		else{
+			$froform->timecreated = time();
 
-		$DB->update_record('tool_edward', $froform, $returnid=true, $bulk=false);
-}
-else{
-	$froform->timecreated = time();
-	// $froform->timemodified = time();
-
-		$DB->insert_record('tool_edward', $froform, $returnid=true, $bulk=false);
-}
+			$DB->insert_record('tool_edward', $froform, $returnid=true, $bulk=false);
+		}
 		
 		redirect($nexturl);
 	} 
