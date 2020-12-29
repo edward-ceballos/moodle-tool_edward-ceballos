@@ -14,3 +14,4 @@ $string['edit'] = 'Editar';
 $string['completed'] = '¿Se Completo?'; 
 $string['completed_help'] = 'Seleccione para marcar como completado';
 $string['error_name'] = 'El nombre <b>{$a}</b> ya existe.';
+$string['description'] = 'Descripción';

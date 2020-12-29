@@ -17,3 +17,4 @@ $string['completed'] = 'Is completed?';
 $string['completed_help'] = 'Select to asign completed';
 $string['error_name'] = 'The name <b>{$a}</b> exists.';
 $string['editentrytitle'] = 'Edit entry {$a}';
+$string['description'] = 'Description';

@@ -27,30 +27,11 @@ class form extends moodleform {
     //Add elements to form
     public function definition() {
 
-        // $repeatarray = array();
-        // $repeatarray[] = $form->createElement('text', 'limit', get_string('limitno', 'choice'));
-       
-        // if (@$this->_instance){
-        //     $repeatno = $DB->count_records('choice_options', array('choiceid'=>$this->_instance));
-        //     $repeatno += 2;
-        // } else {
-        //     $repeatno = 2;
-        // }
-       
-        // $repeateloptions = array();
-        // $repeateloptions['limit']['default'] = 0;
-        // $repeateloptions['limit']['disabledif'] = array('limitanswers', 'eq', 0);
-        // $repeateloptions['limit']['rule'] = 'numeric';
-        // $repeateloptions['limit']['type'] = PARAM_INT;
-       
-        // $repeateloptions['limit']['helpbutton'] = array('choiceoptions', 'choice');
-       
-        // $this->repeat_elements($repeatarray, $repeatno,
-        //             $repeateloptions, 'option_repeats', 'option_add_fields', 1, null, true);
-
         global $CFG, $PAGE;
         
         $form = $this->_form;
+        $context = context_system::instance();
+        $descriptionoptions = array('trusttext'=>true, 'subdirs'=>true, 'maxfiles' => EDITOR_UNLIMITED_FILES);
 
         $form->addElement('header', null, get_string('pluginname', 'tool_edward'));
         $form->addElement('text', 'name', get_string('name'), array('size' => '100%', 'maxlength' => 255));
@@ -68,14 +49,19 @@ class form extends moodleform {
         $form->addElement('hidden', 'id', NUll);
         $form->setType('id', PARAM_NOTAGS);
 
+        $form->addElement('editor', 'description_editor', get_string('description', 'tool_edward'), null, $descriptionoptions);
+        $form->setType('description_editor', PARAM_RAW);
+        $form->addRule('description_editor', get_string('required'), 'required', null, 'client');
+
         $this->add_action_buttons();
     }
+
     //Custom validation should be added here
     function validation($data, $files) {
 
-        var_dump($data);
         global $DB;
         $errors = array();
+
 
         if (isset($data['id']) && empty($data['id']) || !isset($data['id'])) {
 

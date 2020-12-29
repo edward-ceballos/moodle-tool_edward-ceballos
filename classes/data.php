@@ -39,7 +39,7 @@ class data {
 		$table = new html_table();
 
 		if (has_capability('tool/edward:edit', context_course::instance($PAGE->course->id))){
-			$table->head = array('ID', get_string('name'), get_string('resolved', 'tool_edward'), get_string('priority', 'tool_edward'), get_string('timecreated', 'tool_edward'), get_string('timemodified', 'tool_edward'), get_string('actions', 'tool_edward'));
+			$table->head = array('ID', get_string('name'), get_string('resolved', 'tool_edward'), get_string('priority', 'tool_edward'), get_string('description', 'tool_edward'), get_string('timecreated', 'tool_edward'), get_string('timemodified', 'tool_edward'), get_string('actions', 'tool_edward'));
 
 			foreach ($rows as $records) {
 				
@@ -48,6 +48,7 @@ class data {
 					$this->col_name($records->name), 
 					$records->completed == 1 ? get_string('yes') : get_string('no'),
 					$records->priority,
+					$records->description,
 					$records->timecreated ? userdate($records->timecreated) : '',
 					$records->timemodified ? userdate($records->timemodified) : '',
 					html_writer::link(
@@ -62,7 +63,7 @@ class data {
 			}
 		}
 		else{
-			$table->head = array('ID', get_string('name'), get_string('status'), get_string('priority', 'tool_edward'), get_string('timecreated', 'tool_edward'), get_string('timemodified', 'tool_edward'));
+			$table->head = array('ID', get_string('name'), get_string('status'), get_string('priority', 'tool_edward'), get_string('description', 'tool_edward'), get_string('timecreated', 'tool_edward'), get_string('timemodified', 'tool_edward'));
 
 			foreach ($rows as $records) {
 				$table->data[] = array(
@@ -70,6 +71,7 @@ class data {
 					$this->col_name($records->name), 
 					$records->completed == 1 ? get_string('yes') : get_string('no'),
 					$records->priority,
+					$records->description,
 					$records->timecreated ? userdate($records->timecreated) : '',
 					$records->timemodified ? userdate($records->timemodified) : '',
 				);
