@@ -27,11 +27,15 @@ class form extends moodleform {
     //Add elements to form
     public function definition() {
 
-        global $CFG, $PAGE;
-        
+        global $CFG;
+        $courseid  = optional_param('courseid', null, PARAM_INT);
+
         $form = $this->_form;
-        $context = context_system::instance();
-        $descriptionoptions = array('trusttext'=>true, 'subdirs'=>true, 'maxfiles' => EDITOR_UNLIMITED_FILES);
+        $context = context_course::instance($courseid);
+        $descriptionoptions = array('trusttext'=>true, 'subdirs'=>true, 'maxfiles' => EDITOR_UNLIMITED_FILES, 'context'=>$context);
+        // echo "<pre>";
+        // var_dump($this);
+        // $descriptionoptions = $this->_customdata['descriptionoptions'];
 
         $form->addElement('header', null, get_string('pluginname', 'tool_edward'));
         $form->addElement('text', 'name', get_string('name'), array('size' => '100%', 'maxlength' => 255));
@@ -43,7 +47,7 @@ class form extends moodleform {
         $form->setType('completed', PARAM_NOTAGS);
         $form->addHelpButton('completed', 'completed', 'tool_edward');
 
-        $form->addElement('hidden', 'courseid', $PAGE->course->id);
+        $form->addElement('hidden', 'courseid', $courseid);
         $form->setType('courseid', PARAM_NOTAGS);
 
         $form->addElement('hidden', 'id', NUll);
@@ -53,15 +57,28 @@ class form extends moodleform {
         $form->setType('description_editor', PARAM_RAW);
         $form->addRule('description_editor', get_string('required'), 'required', null, 'client');
 
+        $form->addElement('filemanager', 'attachments', get_string('attachments', 'tool_edward'), null,
+            array('subdirs' => 0, 'maxbytes' => EDITOR_UNLIMITED_FILES, 'areamaxbytes' => 10485760, 'maxfiles' => 50,
+              'accepted_types' => array('document'), 'return_types'=> FILE_INTERNAL | FILE_EXTERNAL));
+
         $this->add_action_buttons();
     }
 
+
+    function data_preprocessing(&$default_values) {
+        if ($this->current->instance) {
+            // Editing existing instance - copy existing files into draft area.
+            $draftitemid = file_get_submitted_draft_itemid('attachments');
+            file_prepare_draft_area($draftitemid, $this->context->id, 'tool_edward', 'attachments', 0, array('subdirs'=>0, 'maxbytes' => 0, 'maxfiles' => 1, 'mainfile' => true));
+            $default_values['attachments'] = $draftitemid;
+        }
+    }
+    
     //Custom validation should be added here
     function validation($data, $files) {
 
         global $DB;
         $errors = array();
-
 
         if (isset($data['id']) && empty($data['id']) || !isset($data['id'])) {
 
@@ -71,7 +88,6 @@ class form extends moodleform {
                 $errors['name'] = get_string('error_name',  'tool_edward', $name->name);
             }
         }
-        
         
         return $errors;
     }

@@ -30,7 +30,7 @@ if ($deleteid = optional_param('delete', null, PARAM_INT)) {
     require_login(get_course($record->courseid));
     require_capability('tool/edward:edit', context_course::instance($record->courseid));
     $DB->delete_records('tool_edward', ['id' => $deleteid]);
-    redirect(new moodle_url('/admin/tool/edward/index.php', ['id' => $record->courseid]));
+    redirect(new moodle_url('/admin/tool/edward/index.php', ['courseid' => $record->courseid]));
     var_dump(optional_param('delete', null, PARAM_INT));	
 }
 else{

@@ -23,18 +23,52 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-
-
 function tool_edward_extend_navigation_course($navigation, $course, $context) {
 
     if(($context->contextlevel === 50) &&
-        has_capability('gradereport/grader:view', $context)){
+        has_capability('tool/edward:view', $context)){
         global $PAGE;
 
-        $course_node = $PAGE->navigation->add(get_string('pluginname', 'tool_edward'), new moodle_url('/admin/tool/edward/index.php', array('id' => $course->id)), navigation_node::TYPE_SETTING, null, null, new pix_icon('i/settings', ''));
+        $edward_node = $navigation->add(get_string('pluginname', 'tool_edward'), new moodle_url('/admin/tool/edward/index.php', array('courseid' => $course->id)), null, null, null, new pix_icon('i/settings', ''));
 
-        $course_node->showinflatnavigation = true;
-        $course_node->set_indent = 1;
+        $settingnode = $PAGE->navigation->add(get_string('pluginname', 'tool_edward'), new moodle_url('/admin/tool/edward/index.php', array('courseid' => $course->id)), null, null, null, new pix_icon('i/settings', ''));
+
+        $settingnode->showinflatnavigation = true;
+
     }
 
 }
+
+function tool_edward_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options = array()) {
+
+    if ($filearea !== 'img' && $filearea !== 'attachments') {
+        return false;
+    }
+
+    if (($context->contextlevel != 50) &&
+        !has_capability('tool/edward:view', $context)) {
+        return false;
+    }
+
+    $itemid = array_shift($args);
+
+    $filename = array_pop($args);
+    if (!$args) {
+        $filepath = '/';
+    } else {
+        $filepath = '/'.implode('/', $args).'/';
+    }
+ 
+    // Retrieve the file from the Files API.
+    $fs = get_file_storage();
+    $file = $fs->get_file($context->id, 'tool_edward', $filearea, $itemid, $filepath, $filename);
+    if (!$file) {
+        return false;
+    }
+ 
+    send_stored_file($file, 86400, 0, $forcedownload, $options);
+}
+
+
+
+

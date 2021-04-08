@@ -22,45 +22,39 @@
  */
 
 require_once(__DIR__ . '/../../../config.php');
-
+require_once($CFG->libdir.'/adminlib.php');
+require_once($CFG->dirroot.'/'.$CFG->admin.'/tool/edward/lib.php');
 require_login(null, false);
-// var_dump($PAGE->course->id);
-require_capability('tool/edward:view', context_course::instance($PAGE->course->id));
+
+$courseid = required_param('courseid', PARAM_INT);
+$course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
 
 $url = new moodle_url('/admin/tool/edward/index.php');
-$PAGE->set_url($url, array('id' => $PAGE->course->id));
-$PAGE->set_context(context_system::instance());
-$PAGE->set_pagelayout('report');
+$PAGE->set_url($url, array('courseid' => $courseid));
+$PAGE->set_context(context_course::instance($courseid));
+$PAGE->set_course($course);
 $PAGE->set_title(get_string('pluginname', 'tool_edward'));
 $PAGE->set_heading(get_string('hello_world', 'tool_edward'));
 
-// $settingnode = $PAGE->settingsnav->add(get_string('pluginname', 'tool_edward'), new moodle_url('/admin/tool/edward/index.php', array('id'=> $PAGE->course->id)), navigation_node::TYPE_CONTAINER);
-
 $count_user = $DB->count_records('user');
-
-
-require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/'.$CFG->admin.'/tool/edward/lib.php');
-
-tool_edward_extend_navigation_course($PAGE->navigation, $PAGE->course, context_course::instance($PAGE->course->id));
 
 echo $OUTPUT->header();
 
 echo html_writer::div(
 	get_string('hello_world', 'tool_edward'), 
 	'multilang', 
-	array('id' => $PAGE->course->id, 'lang' => current_language())
+	array('id' => $courseid, 'lang' => current_language())
 ); 
 
 echo html_writer::div(
 	get_string('text_count_users', 'tool_edward', $count_user), 
 	'multilang', 
-	array('id' => $PAGE->course->id, 'lang' => current_language())
+	array('id' => $courseid, 'lang' => current_language())
 ); 
 
-if (has_capability('tool/edward:edit', context_course::instance($PAGE->course->id))){
+if (has_capability('tool/edward:edit', context_course::instance($courseid))){
 	echo html_writer::link(
-		new moodle_url('/admin/tool/edward/edit.php'),
+		new moodle_url('/admin/tool/edward/edit.php', array('courseid' => $courseid)),
 		get_string('add', 'tool_edward'),
 		array('class' => "add")
 	); 
@@ -71,7 +65,7 @@ if (has_capability('tool/edward:edit', context_course::instance($PAGE->course->i
 // }
 
 $data = new data();
-$table = $data->get_data($PAGE->course->id);
+$table = $data->get_data($courseid);
 
 echo html_writer::table($table);
 

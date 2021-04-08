@@ -30,12 +30,10 @@
 	    And I follow "My First Moodle Plugin"
 	    And I click the ".add" element
 	    And I set the field "Name" to "Name 1"
+      And I set the field "Description" to "Description 1"
 	    And I press "Save changes"
 	    And I click the ".add" element
 	    And I set the field "Name" to "Name 2"
-	    And I press "Save changes"
-	    And I click the ".edit" element
-	    And I set the field "Name" to "Name 3"
 	    And I press "Save changes"
 	    And I click the ".del" element
 	    And I am on "Course 1" course homepage
