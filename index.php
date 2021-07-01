@@ -21,9 +21,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use tool_edward\output\renderer;
 require_once(__DIR__ . '/../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/'.$CFG->admin.'/tool/edward/lib.php');
+require_once($CFG->dirroot.'/'.$CFG->admin.'/tool/edward/classes/output/renderer.php');
+// require_once($CFG->dirroot.'/'.$CFG->admin.'/tool/edward/lib.php');
 require_login(null, false);
 
 $courseid = required_param('courseid', PARAM_INT);
@@ -38,35 +40,16 @@ $PAGE->set_heading(get_string('hello_world', 'tool_edward'));
 
 $count_user = $DB->count_records('user');
 
-echo $OUTPUT->header();
+$table = $DB->get_records('tool_edward', array('courseid' => $courseid));
 
-echo html_writer::div(
-	get_string('hello_world', 'tool_edward'), 
-	'multilang', 
-	array('id' => $courseid, 'lang' => current_language())
-); 
+$info = (object) array(
+ 'add' => new moodle_url('/admin/tool/edward/edit.php', array('courseid' => $courseid)),
+ 'count' => $count_user,
+ 'content' => $table
+);
 
-echo html_writer::div(
-	get_string('text_count_users', 'tool_edward', $count_user), 
-	'multilang', 
-	array('id' => $courseid, 'lang' => current_language())
-); 
-
-if (has_capability('tool/edward:edit', context_course::instance($courseid))){
-	echo html_writer::link(
-		new moodle_url('/admin/tool/edward/edit.php', array('courseid' => $courseid)),
-		get_string('add', 'tool_edward'),
-		array('class' => "add")
-	); 
-}
-
-// if (!class_exists('data')) {
-  require_once(__DIR__ . '/classes/data.php');
-// }
-
-$data = new data();
-$table = $data->get_data($courseid);
-
-echo html_writer::table($table);
-
-echo $OUTPUT->footer();
+$output = $PAGE->get_renderer('tool_edward');
+$submissionwidget = new edward_submission($info, false);
+echo $output->header();
+echo $output->render($submissionwidget);
+echo $output->footer();

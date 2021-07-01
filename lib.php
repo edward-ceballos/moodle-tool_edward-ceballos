@@ -69,6 +69,53 @@ function tool_edward_pluginfile($course, $cm, $context, $filearea, $args, $force
     send_stored_file($file, 86400, 0, $forcedownload, $options);
 }
 
+/**
+ * Load edward message for guests.
+ *
+ * @return string The HTML code to insert before the head.
+ */
+function tool_edward_before_standard_html_head() {
+    global $CFG, $PAGE, $USER;
+
+    $message = null;
+    if (!empty($CFG->siteedwardhandler)
+            && $CFG->siteedwardhandler == 'tool_edward'
+            && empty($USER->edwardagreed)
+            && (isguestuser() || !isloggedin())) {
+        $output = $PAGE->get_renderer('tool_edward');
+        try {
+            $page = new \tool_edward\output\guestconsent();
+            $message = $output->render($page);
+        } catch (dml_read_exception $e) {
+            // During upgrades, the new plugin code with new SQL could be in place but the DB not upgraded yet.
+            $message = null;
+        }
+    }
+
+    return $message;
+}
+
+/**
+ * Callback to add footer elements.
+ *
+ * @return string HTML footer content
+ */
+function tool_edward_standard_footer_html() {
+    global $CFG, $PAGE;
+
+    $output = '';
+    if (!empty($CFG->siteedwardhandler)
+            && $CFG->siteedwardhandler == 'tool_edward') {
+        $policies = api::get_current_versions_ids();
+        if (!empty($policies)) {
+            $url = new moodle_url('/admin/tool/edward/viewall.php', ['returnurl' => $PAGE->url]);
+            $output .= html_writer::link($url, get_string('useredwardsettings', 'tool_edward'));
+            $output = html_writer::div($output, 'policiesfooter');
+        }
+    }
+
+    return $output;
+}
 
 
 

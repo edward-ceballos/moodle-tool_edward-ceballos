@@ -1,0 +1,63 @@
+{{#capability}}
+	<p><a href="{{add}}">{{#str}} add, tool_edward {{/str}}</a></p>
+{{/capability}}
+<p>{{#str}} text_count_users, tool_edward, {{count}} {{/str}}</p>
+
+<table class="generaltable">
+
+	{{! Print the heading row of the table. }}
+	<thead>
+		<tr>
+			<th class="header replies" scope="col">
+				{{#str}} name {{/str}}
+			</th>
+			<th class="header replies" scope="col">
+				{{#str}} resolved, tool_edward {{/str}}
+			</th>
+			<th class="header replies" scope="col">
+				{{#str}} priority, tool_edward {{/str}}
+			</th>
+			<th class="header replies" scope="col">
+				{{#str}} description, tool_edward {{/str}}
+			</th>
+			{{#capability}}
+				<th class="header replies" scope="col">
+					{{#str}} attachments, tool_edward {{/str}}
+				</th>
+			{{/capability}}
+			<th class="header replies" scope="col">
+				{{#str}} timecreated, tool_edward {{/str}}
+			</th>
+			<th class="header replies" scope="col">
+				{{#str}} timemodified, tool_edward {{/str}}
+			</th>
+			{{#capability}}
+				<th class="header replies" scope="col">
+					{{#str}} actions, tool_edward {{/str}}
+				</th>
+			{{/capability}}
+		</tr>
+	</thead>
+
+	{{! Print the body of the discussion. }}
+	<tbody>
+		{{#content}}
+		<tr>
+			<td>{{name}}</td>
+			<td>{{completed}}</td>
+			<td>{{priority}}</td>
+			<td>{{{description}}}</td>
+			{{#capability}}
+				<td>{{{attachments}}}</td>
+			{{/capability}}
+			<td>{{timecreated}}</td>
+			<td>{{timemodified}}</td>
+			{{#capability}}
+				<td>{{{actions}}}</td>
+			{{/capability}}
+		</tr>
+		{{/content}}
+
+	</tbody>
+
+</table>
