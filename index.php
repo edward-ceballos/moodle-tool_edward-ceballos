@@ -48,6 +48,7 @@ $info = (object) array(
  'content' => $table
 );
 
+$PAGE->requires->js_call_amd('tool_edward/script', 'init');
 $output = $PAGE->get_renderer('tool_edward');
 $submissionwidget = new edward_submission($info, false);
 echo $output->header();

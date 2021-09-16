@@ -59,7 +59,7 @@ class edward_submission implements renderable {
                     get_string('edit', 'tool_edward'), array('title' => get_string('editentrytitle', 'tool_edward', format_string($records->name)), 'class' => 'edit')
                 )
                 .' '.html_writer::link(
-                    new moodle_url('/admin/tool/edward/delete.php', array('courseid' => $courseid, 'delete' =>$records->id)),
+                    new moodle_url('/admin/tool/edward/delete.php', array('courseid' => $courseid, 'delete' => 0)),
                     get_string('delete', 'tool_edward'), array('class' => 'del')
                 ),
             );
