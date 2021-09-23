@@ -1,5 +1,5 @@
 {{#capability}}
-	<p><a href="{{add}}">{{#str}} add, tool_edward {{/str}}</a></p>
+	<p><a href="{{add}}" class="add">{{#str}} add, tool_edward {{/str}}</a></p>
 {{/capability}}
 <p>{{#str}} text_count_users, tool_edward, {{count}} {{/str}}</p>
 
@@ -60,4 +60,10 @@
 
 	</tbody>
 </table>
-
+{{#js}}
+M.util.js_pending('tool_edward/script');
+require(['tool_edward/script'], function(script) {
+	script.init();
+    M.util.js_complete('tool_edward/script');
+});
+{{/js}}

@@ -12,6 +12,7 @@ $string['edward:edit'] = 'Edit Edward';
 $string['add'] = 'Add';
 $string['edit'] = 'Edit';
 $string['delete'] = 'Delete';
+$string['confirm_del'] = 'Do you really want to delete?';
 $string['actions'] = 'Actions';
 $string['completed'] = 'Is completed?'; 
 $string['completed_help'] = 'Select to asign completed';

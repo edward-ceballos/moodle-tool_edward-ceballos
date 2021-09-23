@@ -1,56 +1,31 @@
-// export const showTheThing = thingToShow => {
-//     // Load the module for this thing.
-//     import(`local_examples/local/types/type_${thingToShow.modname}`)
-//     .then(thingModule => {
-//         window.console.log(`The ${thingToShow.modname} is now available under thingModule within this scope`);
-
-//         return thingModule;
-//     });
-// };
-
-define(['jquery', 'core/modal_factory'], function($, ModalFactory) {
+define(['jquery', 'core/modal_factory', 'core/modal_events', 'core/str'],
+        function($, ModalFactory, ModalEvents, Str) {
 
 
     return {
         init: function() {
             $('a.del').on('click', function(e) {
                 e.stopPropagation();
-                    e.preventDefault();
-                    // return false;
-                // var clickedLink = $(e.currentTarget);
+                e.preventDefault();
+
+                var clickedLink = $(e.currentTarget);
+                var del = Str.get_string('delete', 'tool_edward');
+                var qt = Str.get_string('confirm_del', 'tool_edward');
+
                 ModalFactory.create({
                     type: ModalFactory.types.SAVE_CANCEL,
-                    title: 'Delete item',
-                    body: 'Do you really want to delete?',
+                    title: del,
+                    body: qt,
                 })
                 .then(function(modal) {
-                    modal.setSaveButtonText('Delete');
-                    // var root = modal.getRoot();
-                    // root.on(ModalEvents.save, function() {
-                    //     var elementid = clickedLink.data('id');
-                    //     // Do something to delete item
-                    // });
+                    modal.setSaveButtonText(del);
+                    var root = modal.getRoot();
+                    root.on(ModalEvents.save, function() {
+                         window.location = clickedLink.prop('href');
+                    });
                     modal.show();
-                    // alert(e);
-                    e.stopPropagation();
-                    e.preventDefault();
                 });
             });
         }
     };
 });
-
-// require(['jquery', 'core/modal_factory'], function($, ModalFactory) {
-//   var trigger = $('#create-modal');
-//   ModalFactory.create({
-//     title: 'test title',
-//     body: '<p>test body content</p>',
-//     footer: 'test footer content',
-//   }, trigger)
-//   .done(function(modal) {
-//     // Do what you want with your new modal.
-
-//     // Maybe... add a class to the modal dialog, to be able to style it.
-//     modal.getRoot().addClass('mydialog');
-//   });
-// });

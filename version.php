@@ -24,9 +24,9 @@
  
 defined('MOODLE_INTERNAL') || die();
  
-$plugin->version = 2020122121;
+$plugin->version = 2020122123;
 $plugin->requires = 2014051200;
 $plugin->supported = [37, 39];
 $plugin->component = 'tool_edward';
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release = 'v2.1';
+$plugin->release = 'v2.3';
